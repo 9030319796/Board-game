@@ -90,46 +90,46 @@ pipeline{
                 }
             }
         }
-        stage('build-scan-push docker image'){
-            environment{
-                image_tag="venkateshreddy679/board-game:${env.BUILD_NUMBER}"
-            }
-            steps{
-                sh '''echo buildig the docker image with tag ${image_tag}
-                docker build -t ${image_tag} .
-                echo scanning the docker image using trivy
-                trivy image --format table -o trivy-image-report.html ${image_tag}'''
-                withDockerRegistry(credentialsId: 'docker_cred', url: 'https://index.docker.io/v1/') {
-                    sh '''echo pushing the image to docker
-                    docker push ${image_tag}'''
-                }
-            }
-        }
-        stage('update yaml file'){
-            steps{
-                sh '''echo updating the deployment-service.yaml file with the latest image tag
-                sed -i "s/board-game:[0-9]*/board-game:${BUILD_NUMBER}/g" ./deployment-service.yaml'''
-            }
-        }
-       stage('continuous delivery'){
-            steps{
-                withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'kuberetes_sa_token',
-                namespace: 'board-game', restrictKubeConfigAccess: false, serverUrl: 'https://34.125.129.163:6443') {
-                    sh ''' kubectl apply -f deployment-service.yaml'''
-                }
-            }
-        }
-        stage('verify delivery and audit'){
-            steps{
-                withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'kuberetes_sa_token',
-                namespace: 'board-game', restrictKubeConfigAccess: false, serverUrl: 'https://34.125.129.163:6443') {
-                    sh ''' kubectl get deployment
-                    kubectl get service
-                    sudo touch kubeaudit_result.txt
-                    sudo chmod 777 kubeaudit_result.txt
-                    kubeaudit all > kubeaudit_result.txt'''
-                }
-            }
-        }
+        // stage('build-scan-push docker image'){
+        //     environment{
+        //         image_tag="venkateshreddy679/board-game:${env.BUILD_NUMBER}"
+        //     }
+        //     steps{
+        //         sh '''echo buildig the docker image with tag ${image_tag}
+        //         docker build -t ${image_tag} .
+        //         echo scanning the docker image using trivy
+        //         trivy image --format table -o trivy-image-report.html ${image_tag}'''
+        //         withDockerRegistry(credentialsId: 'docker_cred', url: 'https://index.docker.io/v1/') {
+        //             sh '''echo pushing the image to docker
+        //             docker push ${image_tag}'''
+        //         }
+        //     }
+        // }
+        // stage('update yaml file'){
+        //     steps{
+        //         sh '''echo updating the deployment-service.yaml file with the latest image tag
+        //         sed -i "s/board-game:[0-9]*/board-game:${BUILD_NUMBER}/g" ./deployment-service.yaml'''
+        //     }
+        // }
+       // stage('continuous delivery'){
+       //      steps{
+       //          withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'kuberetes_sa_token',
+       //          namespace: 'board-game', restrictKubeConfigAccess: false, serverUrl: 'https://34.125.129.163:6443') {
+       //              sh ''' kubectl apply -f deployment-service.yaml'''
+       //          }
+       //      }
+       //  }
+        // stage('verify delivery and audit'){
+        //     steps{
+        //         withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'kuberetes_sa_token',
+        //         namespace: 'board-game', restrictKubeConfigAccess: false, serverUrl: 'https://34.125.129.163:6443') {
+        //             sh ''' kubectl get deployment
+        //             kubectl get service
+        //             sudo touch kubeaudit_result.txt
+        //             sudo chmod 777 kubeaudit_result.txt
+        //             kubeaudit all > kubeaudit_result.txt'''
+        //         }
+        //     }
+        // }
     }
 }
