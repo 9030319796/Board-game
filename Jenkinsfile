@@ -7,7 +7,7 @@ pipeline{
         maven 'MAVEN_HOME'
     }
     environment {
-        SCANNER_HOME = "sonar-server"
+        SCANNER_HOME = tool "sonar-server"
     }
 
     stages{
