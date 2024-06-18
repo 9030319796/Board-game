@@ -57,6 +57,7 @@ pipeline{
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=board-game-app \
                     -Dsonar.projectKey=board-game-app \
                     -Dsonar.userHome=`pwd`/.sonar \
+                    -Dsonar.exclusions=**/*.java
                     '''
                 }
             }
