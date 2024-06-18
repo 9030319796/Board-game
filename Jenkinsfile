@@ -1,16 +1,20 @@
 pipeline{
     agent{
-        label 'slave01'
+        label 'amazonvm_slave'
     }
     tools{
-        jdk 'java17'
-        maven 'maven3'
+        jdk 'JAVA_HOME'
+        maven 'MAVEN_HOME'
     }
+    environment {
+        SCANNER_HOME = "sonar-server"
+    }
+
     stages{
         stage('SCM checkout'){
             steps{
                 sh 'echo cloning the repo into the slave machine'
-                git branch: 'main', url: 'https://github.com/venkatesh-reddy679/Board_Game-CI-CD.git'
+                git branch: 'main', url: 'https://github.com/9030319796/Board-game.git'
             }
         }
         stage('compile source code'){
@@ -39,32 +43,48 @@ pipeline{
                 trivy fs --format table -o trivy-fs-report.html .'''
             }
         }
-        stage('code quality check'){
+        // stage('code quality check'){
+        //     steps{
+        //         withSonarQubeEnv('sonar-server') {
+        //             sh '''echo performing source code quality analysis using soarqube-scanner
+        //             mvn sonar:sonar -Dsonar.projectName="Board-Game" -Dsonar.projectKey="Board-Game" -Dsonar.java.binaries=./target/classes'''
+        //         }
+        //     }
+        // }
+         stage("Sonarqube Analysis"){
             steps{
-                withSonarQubeEnv('sonarqube-server') {
-                    sh '''echo performing source code quality analysis using soarqube-scanner
-                    mvn sonar:sonar -Dsonar.projectName="Board-Game" -Dsonar.projectKey="Board-Game" -Dsonar.java.binaries=./target/classes'''
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=board-game-app \
+                    -Dsonar.projectKey=board-game-app \
+                    '''
                 }
             }
         }
-        stage('quality gate'){
-            steps{
-               script{
-                   try{
-                        timeout(time: 10, unit: 'MINUTES') {
-                            sh "echo pipeline execution will be halted for upto to 10 minutes for receiving the quaity gate status from sonarqube server"
-                            waitForQualityGate abortPipeline: true, credentialsId: 'sonarqube_token'
-                        }
-                   }catch(Exception e){
-                       error 'timeout error raised because the quality gate status is not received'
-                   }
-               }
+        // stage('quality gate'){
+        //     steps{
+        //        script{
+        //            try{
+        //                 timeout(time: 10, unit: 'MINUTES') {
+        //                     sh "echo pipeline execution will be halted for upto to 10 minutes for receiving the quaity gate status from sonarqube server"
+        //                     waitForQualityGate abortPipeline: true, credentialsId: 'sonarqube_token'
+        //                 }
+        //            }catch(Exception e){
+        //                error 'timeout error raised because the quality gate status is not received'
+        //            }
+        //        }
                 
-            }
+        //     }
+        // }
+        stage("Quality Gate"){
+           steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
+                }
+            } 
         }
         stage('deploy the artifact to nexus'){
             steps{
-                withMaven(globalMavenSettingsConfig: '', jdk: 'java17', maven: 'maven3', mavenSettingsConfig: 'nexus', traceability: true) {
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: 'nexus', traceability: true) {
                     sh '''echo deploying the build artifact to the nexus repository with version 0.0.${BUILD_NUMBER}
                     mvn deploy'''
                 }
