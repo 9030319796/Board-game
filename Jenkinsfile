@@ -95,37 +95,27 @@ pipeline{
         stage('Move the jar file') {
             steps {
                 sh '''
-                mv /home/jenkins/workspace/board-game/target/*.jar /home/jenkins/
+                mv /home/jenkins/workspace/board-game/target/*.jar /home/jenkins/workspace/board-game/
                 '''
             }
         }
-        stage('Check and Upload to Nexus') {
+        stage('Artifacts Upload') {
             steps {
-                script {
-                    def jarFiles = findFiles(glob: 'target/*.jar')
-                    if (jarFiles.length > 0) {
-                        jarFiles.each { file ->
-                            echo "Found JAR file: ${file.path}"
-                            // Upload to Nexus
-                            nexusArtifactUploader artifacts: [
-                                [artifactId: 'your-app',
-                                 classifier: '',
-                                 file: file.path,
-                                 type: 'jar']
-                            ],
-                            credentialsId: 'Nexus-cred',
-                            groupId: 'project',
-                            nexusUrl: 'http://192.168.29.19:8081/',
-                            protocol: 'http',
-                            repository: 'local-snapshots',
-                            version: '1.0.0'
-                        }
-                    } else {
-                        echo "No JAR files found"
-                        currentBuild.result = 'FAILURE'
-                        error("No JAR files found, failing the build.")
-                    }
-                }
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: 'http://192.168.29.19:8081/nexus',
+                    groupId: 'com.example',
+                    version: '3',
+                    repository: 'local-snapshots',
+                    credentialsId: 'Nexus-cred',
+                    artifacts: [
+                        [artifactId:'my-project',
+                        classifier: '',
+                        file: '*.jar',
+                        type: 'jar']
+                  ]
+              )
             }
         }
         
