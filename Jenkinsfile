@@ -105,7 +105,7 @@ pipeline{
                     artifacts: [
                         [artifactId:'my-project',
                         classifier: '',
-                        file: '/home/jenkins/workspace/board-game/target/*.jar',
+                        file: '*.jar',
                         type: 'jar']
                   ]
               )
