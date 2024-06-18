@@ -97,14 +97,14 @@ pipeline{
             steps {
                 nexusArtifactUploader(
                     nexusVersion: 'nexus',
-                    protocol: '',
+                    protocol: 'http',
                     nexusUrl: 'http://192.168.29.19:8081/',
                     groupId: 'com.example',
                     version: '3',
                     repository: 'local-snapshots',
                     credentialsId: 'Nexus-cred',
                     artifacts: [
-                        [artifactId:'my-project',
+                        [artifactId:'local-snapshots',
                         classifier: '',
                         file: '/home/jenkins/workspace/board-game/target/database_service_project-2.5.6.jar',
                         type: 'jar']
