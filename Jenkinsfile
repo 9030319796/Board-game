@@ -37,12 +37,12 @@ pipeline{
                 ls -al target'''
             }
         }
-        stage('scan file system'){
-            steps{
-                sh '''echo scanning the files in the cloned git repository using trivy
-                trivy fs --format table -o trivy-fs-report.html .'''
-            }
-        }
+        // stage('scan file system'){
+        //     steps{
+        //         sh '''echo scanning the files in the cloned git repository using trivy
+        //         trivy fs --format table -o trivy-fs-report.html .'''
+        //     }
+        // }
         // stage('code quality check'){
         //     steps{
         //         withSonarQubeEnv('sonar-server') {
@@ -51,17 +51,17 @@ pipeline{
         //         }
         //     }
         // }
-        //  stage("Sonarqube Analysis"){
-        //     steps{
-        //         withSonarQubeEnv('sonar-server') {
-        //             sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=board-game-app \
-        //             -Dsonar.projectKey=board-game-app \
-        //             -Dsonar.userHome=`pwd`/.sonar \
-        //             -Dsonar.exclusions=**/*.java
-        //             '''
-        //         }
-        //     }
-        // }
+         stage("Sonarqube Analysis"){
+            steps{
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=board-game-app \
+                    -Dsonar.projectKey=board-game-app \
+                    -Dsonar.userHome=`pwd`/.sonar \
+                    -Dsonar.exclusions=**/*.java
+                    '''
+                }
+            }
+        }
         // stage('quality gate'){
         //     steps{
         //        script{
@@ -77,13 +77,13 @@ pipeline{
                 
         //     }
         // }
-        // stage("Quality Gate"){
-        //    steps {
-        //         script {
-        //             waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
-        //         }
-        //     } 
-        // }
+        stage("Quality Gate"){
+           steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
+                }
+            } 
+        }
         // stage('deploy the artifact to nexus'){
         //     steps{
         //         withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: 'nexus', traceability: true) {
