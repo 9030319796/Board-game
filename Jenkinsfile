@@ -92,13 +92,7 @@ pipeline{
         //         }
         //     }
         // }
-        stage('Move the jar file') {
-            steps {
-                sh '''
-                mv /home/jenkins/workspace/board-game/target/*.jar /home/jenkins/workspace/board-game/
-                '''
-            }
-        }
+        
         stage('Artifacts Upload') {
             steps {
                 nexusArtifactUploader(
@@ -112,7 +106,7 @@ pipeline{
                     artifacts: [
                         [artifactId:'my-project',
                         classifier: '',
-                        file: '${WORKSPACE}/*.jar',
+                        file: '/home/jenkins/workspace/board-game/target/*.jar',
                         type: 'jar']
                   ]
               )
