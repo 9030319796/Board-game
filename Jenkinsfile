@@ -84,12 +84,31 @@ pipeline{
                 }
             } 
         }
-        stage('deploy the artifact to nexus'){
-            steps{
-                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: 'nexus', traceability: true) {
-                    sh '''echo deploying the build artifact to the nexus repository with version 0.0.${BUILD_NUMBER}
-                    mvn deploy'''
-                }
+        // stage('deploy the artifact to nexus'){
+        //     steps{
+        //         withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: 'nexus', traceability: true) {
+        //             sh '''echo deploying the build artifact to the nexus repository with version 0.0.${BUILD_NUMBER}
+        //             mvn deploy'''
+        //         }
+        //     }
+        // }
+        stage('Artifacts Upload') {
+            steps {
+                nexusArtifactUploader(
+        nexusVersion: 'nexus3',
+        protocol: 'http',
+        nexusUrl: 'http://192.168.29.19:8081/',
+        groupId: 'com.example',
+        version: version,
+        repository: 'local-snapshots',
+        credentialsId: 'Nexus-cred',
+        artifacts: [
+            [artifactId: project,
+             classifier: '',
+             file: 'target/*jar',
+             type: 'jar']
+                  ]
+              )
             }
         }
         // stage('build-scan-push docker image'){
