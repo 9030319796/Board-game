@@ -105,7 +105,7 @@ pipeline{
                     artifacts: [
                         [artifactId:'my-project',
                         classifier: '',
-                        file: '`pwd`target/*.jar',
+                        file: '${WORKSPACE}/target/*.jar',
                         type: 'jar']
                   ]
               )
