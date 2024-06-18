@@ -117,14 +117,15 @@
 	</build>
 
 <distributionManagement>
-    <!-- <repository>
-        <id>maven-releases</id>
+    <repository>
+        <id>nexus</id>
+		<name>local-releases</name>
         <url>http://192.168.0.126:8081/repository/local-releases/</url>
     </repository>
     <snapshotRepository>
-        <id>maven-snapshots</id>
+        <id>nexus</id>
         <url>http://192.168.0.126:8081/repository/local-snapshots/</url>
-    </snapshotRepository> -->
+    </snapshotRepository>
 	
 </distributionManagement>
 </project>
