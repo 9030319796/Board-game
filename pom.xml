@@ -119,8 +119,13 @@
 <distributionManagement>
     <repository>
         <id>maven-releases</id>
-        <url>http://192.168.0.126:8081/repository/local-releases/</url>
+        <url>http://192.168.0.126:8081/repository/local-releases</url>
     </repository>
+	<repository>
+        <id>acme-nexus-releases</id>
+        <name>acme nexus</name>
+        <url>http://192.168.0.126:8081/repository/local-releases/</url>
+       </repository>
     <snapshotRepository>
         <id>maven-snapshots</id>
         <url>http://192.168.0.126:8081/repository/local-snapshots//</url>
