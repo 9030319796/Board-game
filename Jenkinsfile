@@ -17,13 +17,13 @@ pipeline{
                 git branch: 'main', url: 'https://github.com/9030319796/Board-game.git'
             }
         }
-        stage('compile source code'){
-            steps{
+        // stage('compile source code'){
+        //     steps{
                 
-                sh '''echo compiling the source code
-                mvn compile'''
-            }
-        }
+        //         sh '''echo compiling the source code
+        //         mvn compile'''
+        //     }
+        // }
         stage('test compile source code'){
             steps{
                 sh '''echo testing the compiled source code using suitable unit testing framework
