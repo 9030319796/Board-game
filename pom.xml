@@ -118,9 +118,13 @@
 
 <distributionManagement>
     <repository>
-        <id>nexus</id>
-        <url>http://192.168.0.126:8081/repository/local-releases</url>
+        <id>maven-releases</id>
+        <url>http://192.168.0.126:8081/repository/local-releases/</url>
     </repository>
+    <snapshotRepository>
+        <id>maven-snapshots</id>
+        <url>http://192.168.0.126:8081/repository/local-snapshots/</url>
+    </snapshotRepository>
 	
 </distributionManagement>
 </project>
