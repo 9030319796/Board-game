@@ -99,25 +99,36 @@ pipeline{
                 '''
             }
         }
-        stage('Artifacts Upload') {
+        stage('Check and Upload to Nexus') {
             steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: 'http://192.168.29.19:8081/',
-                    groupId: 'com.example',
-                    version: '3',
-                    repository: 'local-snapshots',
-                    credentialsId: 'Nexus-cred',
-                    artifacts: [
-                        [artifactId:'my-project',
-                        classifier: '',
-                        file: '/home/jenkins/*.jar',
-                        type: 'jar']
-                  ]
-              )
+                script {
+                    def jarFiles = findFiles(glob: 'target/*.jar')
+                    if (jarFiles.length > 0) {
+                        jarFiles.each { file ->
+                            echo "Found JAR file: ${file.path}"
+                            // Upload to Nexus
+                            nexusArtifactUploader artifacts: [
+                                [artifactId: 'your-app',
+                                 classifier: '',
+                                 file: file.path,
+                                 type: 'jar']
+                            ],
+                            credentialsId: 'Nexus-cred',
+                            groupId: 'project',
+                            nexusUrl: 'http://192.168.29.19:8081/',
+                            protocol: 'http',
+                            repository: 'local-snapshots',
+                            version: '1.0.0'
+                        }
+                    } else {
+                        echo "No JAR files found"
+                        currentBuild.result = 'FAILURE'
+                        error("No JAR files found, failing the build.")
+                    }
+                }
             }
         }
+        
         // stage('build-scan-push docker image'){
         //     environment{
         //         image_tag="venkateshreddy679/board-game:${env.BUILD_NUMBER}"
