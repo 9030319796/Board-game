@@ -96,12 +96,12 @@ pipeline{
         stage('Artifacts Upload') {
             steps {
                 nexusArtifactUploader(
-                    nexusVersion: 'nexus',
+                    nexusVersion: 'nexus3',
                     protocol: 'http',
-                    nexusUrl: 'http://192.168.29.19:8081/',
-                    groupId: 'com.example',
+                    nexusUrl: 'http://192.168.0.125:8081/',
+                    groupId: 'QA',
                     version: '3',
-                    repository: 'maven-releases',
+                    repository: 'local-snapshots',
                     credentialsId: 'Nexus-cred',
                     artifacts: [
                         [artifactId:'local-snapshots',
