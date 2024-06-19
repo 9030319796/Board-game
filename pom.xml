@@ -75,15 +75,16 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<groupId>org.codehaus.groovy</groupId>
+		<dependency>
+		    <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>3.0.9</version>
 			 <!-- Replace with the required version -->
         </dependency>
 		<dependency>
-    <groupId>org.jacoco</groupId> 
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.8.7</version>
+    	<groupId>org.jacoco</groupId> 
+    	<artifactId>jacoco-maven-plugin</artifactId>
+    	<version>0.8.7</version>
 </dependency>
 	</dependencies>
 
