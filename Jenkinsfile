@@ -101,7 +101,7 @@ pipeline{
                     nexusUrl: 'http://192.168.29.19:8081/',
                     groupId: 'com.example',
                     version: '3',
-                    repository: 'local-snapshots',
+                    repository: 'maven-releases',
                     credentialsId: 'Nexus-cred',
                     artifacts: [
                         [artifactId:'local-snapshots',
