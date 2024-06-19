@@ -99,12 +99,12 @@ pipeline{
                     nexusVersion: 'nexus3',
                     protocol: 'http',
                     nexusUrl: 'http://192.168.0.125:8081',
-                    groupId: 'QA',
+                    groupId: pom.groupId,
                     version: '3',
                     repository: 'local-snapshots',
                     credentialsId: 'Nexus-cred',
                     artifacts: [
-                        [artifactId:'local-snapshots',
+                        [artifactId:pom.artifactId,
                         classifier: '',
                         file: '/home/jenkins/workspace/board-game/target/database_service_project-2.5.6.jar',
                         type: 'jar']
