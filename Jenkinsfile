@@ -84,34 +84,34 @@ pipeline{
                 }
             } 
         }
-        // stage('deploy the artifact to nexus'){
-        //     steps{
-        //         withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: 'nexus', traceability: true) {
-        //             sh '''echo deploying the build artifact to the nexus repository with version 0.0.${BUILD_NUMBER}
-        //             mvn deploy'''
-        //         }
-        //     }
-        // }
-        
-        stage('Artifacts Upload') {
-            steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: '192.168.0.125:8081',
-                    groupId: pom.groupId,
-                    version: '3',
-                    repository: 'local-snapshots',
-                    credentialsId: 'Nexus-cred',
-                    artifacts: [
-                        [artifactId:pom.artifactId,
-                        classifier: '',
-                        file: '/home/jenkins/workspace/board-game/target/database_service_project-2.5.6.jar',
-                        type: 'jar']
-                  ]
-              )
+        stage('deploy the artifact to nexus'){
+            steps{
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: 'nexus', traceability: true) {
+                    sh '''echo deploying the build artifact to the nexus repository with version 0.0.${BUILD_NUMBER}
+                    mvn deploy'''
+                }
             }
         }
+        
+        // stage('Artifacts Upload') {
+        //     steps {
+        //         nexusArtifactUploader(
+        //             nexusVersion: 'nexus3',
+        //             protocol: 'http',
+        //             nexusUrl: '192.168.0.125:8081',
+        //             groupId: pom.groupId,
+        //             version: '3',
+        //             repository: 'local-snapshots',
+        //             credentialsId: 'Nexus-cred',
+        //             artifacts: [
+        //                 [artifactId:pom.artifactId,
+        //                 classifier: '',
+        //                 file: '/home/jenkins/workspace/board-game/target/database_service_project-2.5.6.jar',
+        //                 type: 'jar']
+        //           ]
+        //       )
+        //     }
+        // }
         
         // stage('build-scan-push docker image'){
         //     environment{
