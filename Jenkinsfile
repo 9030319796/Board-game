@@ -98,7 +98,7 @@ pipeline{
                 nexusArtifactUploader(
                     nexusVersion: 'nexus3',
                     protocol: 'http',
-                    nexusUrl: 'http://192.168.0.125:8081',
+                    nexusUrl: '192.168.0.125:8081',
                     groupId: pom.groupId,
                     version: '3',
                     repository: 'local-snapshots',
