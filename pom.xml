@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -10,7 +11,7 @@
 	</parent>
 	<groupId>com.javaproject</groupId>
 	<artifactId>database_service_project</artifactId>
-	<!-- <version>0.0.${env.BUILD_NUMBER}</version> -->
+	<version>0.0.${env.BUILD_NUMBER}</version>
 	<name>database_service_project</name>
 	<description>Project for Spring Boot</description>
 	<packaging>jar</packaging>
@@ -66,22 +67,15 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-			 <!-- Replace with the required version -->
-        
+
 		<dependency>
-    	<groupId>org.jacoco</groupId> 
-    	<artifactId>jacoco-maven-plugin</artifactId>
-    	<version>0.8.7</version>
+    <groupId>org.jacoco</groupId> 
+    <artifactId>jacoco-maven-plugin</artifactId>
+    <version>0.8.7</version>
 </dependency>
 	</dependencies>
 
@@ -124,20 +118,13 @@
 	</build>
 
 <distributionManagement>
-   <repository>
-        <id>nexus</id>
-        
-        <url>http://192.168.0.125:8081</url>
-    </repository>
-    <!-- <repository>
-        <id>nexus</id>
-		<name>local-releases</name>
-        <url>http://192.168.0.126:8081/repository/local-releases/</url>
+    <repository>
+        <id>maven-releases</id>
+        <url>http://192.168.0.126:8081/repository/maven-releases/</url>
     </repository>
     <snapshotRepository>
-        <id>nexus</id>
-        <url>http://192.168.0.126:8081/repository/local-snapshots/</url>
-    </snapshotRepository> -->
-	
+        <id>maven-snapshots</id>
+        <url>http://192.168.0.126:8081/repository/maven-snapshots//</url>
+    </snapshotRepository>
 </distributionManagement>
 </project>
