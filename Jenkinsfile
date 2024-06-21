@@ -81,11 +81,11 @@ pipeline {
         stage('Build & Tag Docker Image') {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'DockerHubPass', toolName: 'docker') {
-                        sh "docker build -t board-game-app -f Dockerfile ."
-                        sh "docker tag  board-game-app 9030319796/board-game:latest"
+                    //withDockerRegistry(credentialsId: 'DockerHubPass', toolName: 'docker') {
+                        sh "docker build -t 9030319796/board-game-app -f Dockerfile ."
                         
-                    }
+                        
+                    //}
                 }
             }
         }
