@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'slave_1'
+        label 'amazonvm_slave'
     }
     
     tools{
@@ -13,11 +13,11 @@ pipeline {
     }
 
     stages {
-        stage('Workspace Cleaning'){
-            steps{
-                cleanWs()
-            }
-        }
+        // stage('Workspace Cleaning'){
+        //     steps{
+        //         cleanWs()
+        //     }
+        // }
         stage('Git Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/9030319796/Board-game.git'
@@ -39,8 +39,8 @@ pipeline {
         stage("Sonarqube Analysis"){
             steps{
                 withSonarQubeEnv('sonar-server') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=BOARD-GAME-APP \
-                    -Dsonar.projectKey=BOARD-GAME-APP \
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=BOARD-GAME \
+                    -Dsonar.projectKey=BOARD-GAME \
                     -Dsonar.exclusions=**/*.java
                     '''
                 }
