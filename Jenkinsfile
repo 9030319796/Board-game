@@ -72,13 +72,13 @@ pipeline {
             }
         }
         
-        stage('Deploy To Nexus') {
-            steps {
-                withMaven(globalMavenSettingsConfig: 'global-maven', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-                    sh "mvn deploy -DskipTests=true"
-                }
-            }
-        }
+        // stage('Deploy To Nexus') {
+        //     steps {
+        //         withMaven(globalMavenSettingsConfig: 'global-maven', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+        //             sh "mvn deploy -DskipTests=true"
+        //         }
+        //     }
+        // }
         
         stage('Build & Tag Docker Image') {
             steps {
