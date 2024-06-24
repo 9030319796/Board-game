@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'amazonvm_slave'
+    }
     
     tools{
         jdk  'JAVA_HOME'
