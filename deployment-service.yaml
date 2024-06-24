@@ -13,10 +13,10 @@ spec:
         app: boardgame
     spec:
       imagePullSecrets:
-        - name: docker-cred
+        - name: DockerHubPass
       containers:
-        - name: boardgame
-          image:  venkateshreddy679/board-game:0 # Image that will be used to containers in the cluster
+        - name: board-game
+          image:  9030319796/board-game # Image that will be used to containers in the cluster
           imagePullPolicy: Always
           ports:
             - containerPort: 8080 # The port that the container is running on in the cluster
