@@ -122,7 +122,7 @@ pipeline {
                 script{
                    
                         withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
-                            sh "kubectl apply -f deployment-service.yml"
+                            sh "kubectl apply -f deployment-service.yaml"
                             sh "kubectl get svc"
                         }
     
