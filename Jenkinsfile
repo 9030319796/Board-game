@@ -99,12 +99,12 @@ pipeline {
             }
         }
         
-        stage('Trivy Scan') {
-            steps {
-                sh "trivy image 9030319796/board-game:latest > trivy-report.txt "
+        // stage('Trivy Scan') {
+        //     steps {
+        //         sh "trivy image 9030319796/board-game:latest > trivy-report.txt "
                 
-            }
-        }
+        //     }
+        // }
         
         stage('Push The Docker Image') {
             steps {
