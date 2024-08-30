@@ -8,9 +8,9 @@ pipeline {
         maven  'MAVEN_HOME'
     }
     
-    // environment {
-    //     SCANNER_HOME= tool 'sonar-server'
-    // }
+    environment {
+        SCANNER_HOME= tool 'sonar-server'
+    }
 
     stages {
         // stage('Workspace Cleaning'){
@@ -36,35 +36,35 @@ pipeline {
             }
         }
         
-        // stage("Sonarqube Analysis"){
-        //     steps{
-        //         withSonarQubeEnv('sonar-server') {
-        //             sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=BOARD-GAME \
-        //             -Dsonar.projectKey=BOARD-GAME \
-        //             -Dsonar.exclusions=**/*.java
-        //             '''
-        //         }
-        //     }
-        // }
-        // stage("Quality Gate"){
-        //    steps {
-        //         script {
-        //             waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
-        //         }
-        //     } 
-        // }
+        stage("Sonarqube Analysis"){
+            steps{
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=BOARD-GAME \
+                    -Dsonar.projectKey=BOARD-GAME \
+                    -Dsonar.exclusions=**/*.java
+                    '''
+                }
+            }
+        }
+        stage("Quality Gate"){
+           steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
+                }
+            } 
+        }
         
-        // stage('OWASP Dependency Check') {
-        //     steps {
-        //         dependencyCheck additionalArguments: ' --scan ./', odcInstallation: 'owasp-dp-check'
-        //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-        //     }
-        // }
-        // stage('TRIVY FS SCAN') {
-        //     steps {
-        //         sh "trivy fs . > trivyfs.txt"
-        //     }
-        // }
+        stage('OWASP Dependency Check') {
+            steps {
+                dependencyCheck additionalArguments: ' --scan ./', odcInstallation: 'owasp-dp-check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+        stage('TRIVY FS SCAN') {
+            steps {
+                sh "trivy fs . > trivyfs.txt"
+            }
+        }
         
         stage('Build') {
             steps {
@@ -72,13 +72,13 @@ pipeline {
             }
         }
         
-        // stage('Deploy To Nexus') {
-        //     steps {
-        //         withMaven(globalMavenSettingsConfig: 'global-maven', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-        //             sh "mvn deploy -DskipTests=true"
-        //         }
-        //     }
-        // }
+        stage('Deploy To Nexus') {
+            steps {
+                withMaven(globalMavenSettingsConfig: 'global-maven', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    sh "mvn deploy -DskipTests=true"
+                }
+            }
+        }
         
         stage('Build & Tag Docker Image') {
             steps {
@@ -99,12 +99,12 @@ pipeline {
             }
         }
         
-        // stage('Trivy Scan') {
-        //     steps {
-        //         sh "trivy image 9030319796/board-game:latest > trivy-report.txt "
+        stage('Trivy Scan') {
+            steps {
+                sh "trivy image 9030319796/board-game:latest > trivy-report.txt "
                 
-        //     }
-        // }
+            }
+        }
         
         stage('Push The Docker Image') {
             steps {
@@ -117,20 +117,20 @@ pipeline {
             }
         }
         
-        stage('Kubernetes Deploy') {
-            steps {
-                script{
+        // stage('Kubernetes Deploy') {
+        //     steps {
+        //         script{
                    
-                        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
-                            sh "kubectl apply -f deployment-service.yaml"
-                            sh "kubectl get svc"
-                        }
+        //                 withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+        //                     sh "kubectl apply -f deployment-service.yaml"
+        //                     sh "kubectl get svc"
+        //                 }
     
                 
                     
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
         
         
     }
